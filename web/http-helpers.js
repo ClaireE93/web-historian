@@ -11,10 +11,27 @@ exports.headers = {
 };
 
 exports.serveAssets = function(res, asset, callback) {
-  // Write some code here that helps serve up your static files!
-  // (Static files are things like html (yours or archived from others...),
-  // css, or anything that doesn't change often.)
+  let statusCode;
+  if (asset === '/' ) {
+    res.statusCode = 200;
+    const urlPath = path.join(__dirname, '/public/index.html'); //TODO Use archive.paths.siteAssets
+    fs.readFile(urlPath, (err, data) => {
+      callback(err, data); // callback: response.end(data.toString())
+    });
+  } else if (asset === '/styles.css') {
+    res.statusCode = 200;
+    const urlPath = path.join(__dirname, '/public/styles.css'); //TODO Use archive.paths.siteAssets
+    fs.readFile(urlPath, (err, data) => {
+      callback(err, data); // callback: response.end(data.toString())
+    });
+
+  } else {
+    archive.isUrlArchived(asset, callback);
+  }
+
 };
+
+
 
 
 

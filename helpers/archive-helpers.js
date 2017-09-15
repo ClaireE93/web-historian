@@ -11,7 +11,7 @@ var _ = require('underscore');
 
 exports.paths = {
   siteAssets: path.join(__dirname, '../web/public'),
-  archivedSites: path.join(__dirname, '../archives/sites'),
+  archivedSites: path.join(__dirname, './archives/sites'),
   list: path.join(__dirname, '../archives/sites.txt')
 };
 
@@ -35,10 +35,9 @@ exports.addUrlToList = function(url, callback) {
 };
 
 exports.isUrlArchived = function(url, callback) {
-  console.log('IN URLARCHIVED');
   const urlPath = path.join(__dirname, `../web/archives/sites${url}`);
+  console.log('url path is', urlPath);
   fs.readFile(urlPath, (err, data) => {
-    console.log('readFile Done ERROR', err);
     callback(err, data);
   });
 };
