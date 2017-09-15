@@ -37,22 +37,8 @@ exports.addUrlToList = function(url, callback) {
 exports.isUrlArchived = function(url, callback) {
   console.log('IN URLARCHIVED');
   const urlPath = path.join(__dirname, `../web/archives/sites${url}`);
-  console.log('urlPath is', urlPath);
-
-  // FIXME: Erase thru writeFileSync, this is for TESTING
-  var fd = fs.openSync(path.join(__dirname, `../web/archives/sites/www.test.com`), 'w');
-  fs.writeSync(fd, 'testtest');
-  fs.closeSync(fd);
-
-  // Write data to the file.
-  fs.writeFileSync(path.join(__dirname, `../web/archives/sites/www.test.com`), 'testing');
-
-
-
-
-  //FIXME WRONG URL, use urlPath, this is for testing
-  fs.readFile(path.join(__dirname, `../web/archives/sites/www.test.com`), (err, data) => {
-    console.log('readFile Done TEST DATA', data.toString());
+  fs.readFile(urlPath, (err, data) => {
+    console.log('readFile Done ERROR', err);
     callback(err, data);
   });
 };
