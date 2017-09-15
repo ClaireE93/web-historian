@@ -30,7 +30,6 @@ describe('server', function() {
       it('should return the content of a website from the archive', function (done) {
         var fixtureName = 'www.google.com';
         var fixturePath = archive.paths.archivedSites + '/' + fixtureName;
-
         // Create or clear the file.
         var fd = fs.openSync(fixturePath, 'w');
         fs.writeSync(fd, 'google');
@@ -53,7 +52,7 @@ describe('server', function() {
     });
 
     describe('POST', function () {
-      it('should append submitted sites to \'sites.txt\'', function(done) {
+      xit('should append submitted sites to \'sites.txt\'', function(done) {
         var url = 'www.example.com';
 
         // Reset the test file and process request
@@ -78,7 +77,7 @@ describe('server', function() {
 
 describe('archive helpers', function() {
   describe('#readListOfUrls', function () {
-    it('should read urls from sites.txt', function (done) {
+    xit('should read urls from sites.txt', function (done) {
       var urlArray = ['example1.com', 'example2.com'];
       fs.writeFileSync(archive.paths.list, urlArray.join('\n'));
 
@@ -90,7 +89,7 @@ describe('archive helpers', function() {
   });
 
   describe('#isUrlInList', function () {
-    it('should check if a url is in the list', function (done) {
+    xit('should check if a url is in the list', function (done) {
       var urlArray = ['example1.com', 'example2.com'];
       fs.writeFileSync(archive.paths.list, urlArray.join('\n'));
 
@@ -110,7 +109,7 @@ describe('archive helpers', function() {
   });
 
   describe('#addUrlToList', function () {
-    it('should add a url to the list', function (done) {
+    xit('should add a url to the list', function (done) {
       var urlArray = ['example1.com', 'example2.com\n'];
       fs.writeFileSync(archive.paths.list, urlArray.join('\n'));
 
@@ -124,7 +123,7 @@ describe('archive helpers', function() {
   });
 
   describe('#isUrlArchived', function () {
-    it('should check if a url is archived', function (done) {
+    xit('should check if a url is archived', function (done) {
       fs.writeFileSync(archive.paths.archivedSites + '/www.example.com', 'blah blah');
 
       var counter = 0;
@@ -143,7 +142,7 @@ describe('archive helpers', function() {
   });
 
   describe('#downloadUrls', function () {
-    it('should download all pending urls in the list', function (done) {
+    xit('should download all pending urls in the list', function (done) {
       var urlArray = ['www.example.com', 'www.google.com'];
       archive.downloadUrls(urlArray);
 
