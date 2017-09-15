@@ -35,6 +35,12 @@ exports.addUrlToList = function(url, callback) {
 };
 
 exports.isUrlArchived = function(url, callback) {
+  const urlPath = path.join(__dirname, `../web/archives/sites${url}`);
+  console.log('urlPath is', urlPath);
+  fs.readFile(urlPath, (err, data) => {
+    console.log('readFile Done');
+    callback(err, data);
+  });
 };
 
 exports.downloadUrls = function(urls) {
