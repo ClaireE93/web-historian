@@ -29,14 +29,24 @@ exports.readListOfUrls = function(callback) {
 };
 
 exports.isUrlInList = function(url, callback) {
+  const urlPath = path.join(__dirname, `../web/archives/sites.txt`);
+  fs.readFile(urlPath, (err, data) => {
+    if (err) { throw err; }
+    const dataStr = data.toString();
+    const dataArr = dataStr.split('\n');
+    callback(dataArr.includes(url));
+  });
 };
 
 exports.addUrlToList = function(url, callback) {
+  const urlPath = path.join(__dirname, `../web/archives/sites.txt`);
+  fs.appendFile(urlPath, url + '\n', (err) => {
+    callback(err);
+  });
 };
 
 exports.isUrlArchived = function(url, callback) {
   const urlPath = path.join(__dirname, `../web/archives/sites${url}`);
-  console.log('url path is', urlPath);
   fs.readFile(urlPath, (err, data) => {
     callback(err, data);
   });

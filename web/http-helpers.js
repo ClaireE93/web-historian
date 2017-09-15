@@ -24,7 +24,12 @@ exports.serveAssets = function(res, asset, callback) {
     fs.readFile(urlPath, (err, data) => {
       callback(err, data); // callback: response.end(data.toString())
     });
-
+  } else if (asset === '/loading.html') {
+    res.statusCode = 302;
+    const urlPath = path.join(__dirname, '/public/loading.html'); //TODO Use archive.paths.siteAssets
+    fs.readFile(urlPath, (err, data) => {
+      callback(err, data); // callback: response.end(data.toString())
+    });
   } else {
     archive.isUrlArchived(asset, callback);
   }

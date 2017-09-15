@@ -57,7 +57,9 @@ describe('server', function() {
         var url = 'www.example.com';
 
         // Reset the test file and process request
-        fs.closeSync(fs.openSync(archive.paths.list, 'w'));
+        const testFile = path.join(__dirname, `../web/archives/sites/sites.txt`);
+        // fs.closeSync(fs.openSync(archive.paths.list, 'w'));
+        fs.closeSync(fs.openSync(testFile, 'w'));
 
         request
           .post('/')
@@ -65,8 +67,9 @@ describe('server', function() {
           .send({ url: url })
           .expect(302, function (err) {
             if (!err) {
-              var fileContents = fs.readFileSync(archive.paths.list, 'utf8');
-              expect(fileContents).to.equal(url + '\n');
+              // var fileContents = fs.readFileSync(archive.paths.list, 'utf8'); //FIXME: url path might be wrong
+              var fileContents = fs.readFileSync(testFile, 'utf8'); //FIXME: url path might be wrong
+              expect(fileContents.toString()).to.equal(url + '\n');
             }
 
             done(err);

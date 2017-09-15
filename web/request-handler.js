@@ -5,24 +5,68 @@ const urlMod = require('url');
 const httpHelpers = require('./http-helpers');
 // require more modules/folders here!
 
+
+
 exports.handleRequest = function (req, res) {
   const { url, method, headers } = req;
   let statusCode;
   const parsedURL = urlMod.parse(url, true);
 
-  if (method === 'GET') {
-    const cb = (err, data) => {
-      if (err) {
-        res.statusCode = 404;
-        res.end();
-      } else {
-        res.statusCode = 200;
-        res.end(data.toString());
-      }
-    };
+  const staticFileCb = (err, data) => {
+    if (err) {
+      res.statusCode = 404;
+      res.end();
+    } else {
+      res.end(data.toString());
+    }
+  };
 
-    httpHelpers.serveAssets(res, url, cb);
+  const addUrlCb = (err) => {
+    if (err) {
+      res.statusCode = 404;
+      res.end();
+    } else {
+      console.log('SENDING 302');
+      res.statusCode = 302;
+      res.end();
+    }
+  };
+
+  if (method === 'GET') {
+
+    httpHelpers.serveAssets(res, url, staticFileCb);
+
+  } else if (method === 'POST') {
+
+
+
+    let body = [];
+    req.on('error', (err) => {
+      console.error(err);
+    }).on('data', (chunk) => {
+      body.push(chunk);
+    }).on('end', () => {
+      body = Buffer.concat(body).toString();
+      const urlToAdd = body.split('=')[1];
+
+      const handleUrlInListResponse = (isInList) => {
+        console.log('ISINLIST IS', isInList);
+        console.log('urlToAdd is', urlToAdd);
+        if (isInList) {
+          httpHelpers.serveAssets(res, '/loading.html', staticFileCb);
+        } else {
+          archive.addUrlToList(urlToAdd, addUrlCb);
+        }
+      };
+
+      archive.isUrlInList(urlToAdd, handleUrlInListResponse);
+    });
+
   } else {
     res.end(archive.paths.list);
   }
+
+
+
+
 };
