@@ -30,7 +30,9 @@ exports.handleRequest = function (req, res) {
         res.end(data.toString());
       });
     };
-    
+
+    console.log('GETTING FILE...', url);
+
     archive.isUrlArchived(url, cb);
   } else {
     res.end(archive.paths.list);
