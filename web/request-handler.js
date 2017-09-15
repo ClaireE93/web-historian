@@ -50,8 +50,6 @@ exports.handleRequest = function (req, res) {
       const urlToAdd = body.split('=')[1];
 
       const handleUrlInListResponse = (isInList) => {
-        console.log('ISINLIST IS', isInList);
-        console.log('urlToAdd is', urlToAdd);
         if (isInList) {
           httpHelpers.serveAssets(res, '/loading.html', staticFileCb);
         } else {
