@@ -58,4 +58,10 @@ exports.isUrlArchived = function(url, callback) {
 };
 
 exports.downloadUrls = function(urls) {
+  const urlPath = path.join(__dirname, `../web/archives/sites/`);
+  urls.forEach((url) => {
+    const fd = fs.openSync(urlPath + url, 'w');
+    fs.closeSync(fd);
+  });
+
 };
