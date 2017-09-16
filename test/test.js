@@ -141,12 +141,12 @@ describe('archive helpers', function() {
       var counter = 0;
       var total = 2;
 
-      archive.isUrlArchived('/www.example.com', function (exists) {
+      archive.isUrlArchived('www.example.com', function (exists) {
         expect(exists).to.be.true;
         if (++counter === total) { done(); }
       });
 
-      archive.isUrlArchived('/www.notarchived.com', function (exists) {
+      archive.isUrlArchived('www.notarchived.com', function (exists) {
         expect(exists).to.be.false;
         if (++counter === total) { done(); }
       });
