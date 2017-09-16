@@ -163,7 +163,7 @@ describe('archive helpers', function() {
         // expect(fs.readdirSync(archive.paths.archivedSites)).to.deep.equal(urlArray);
         expect(fs.readdirSync(path.join(__dirname, `../web/archives/sites`))).to.deep.equal(urlArray);
         done();
-      }, 500);
+      }, 1500);
     });
   });
 });

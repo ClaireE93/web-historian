@@ -21,6 +21,7 @@ exports.serveAssets = function(res, asset, callback) {
     res.statusCode = 302;
     urlPath = path.join(__dirname, '/public/loading.html'); //TODO Use archive.paths.siteAssets
   } else {
+    // res.statusCode = 302;
     urlPath = path.join(__dirname, `../web/archives/sites/${asset}`);
   }
 

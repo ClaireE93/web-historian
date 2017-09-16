@@ -39,6 +39,8 @@ exports.handleRequest = function (req, res) {
 
   } else if (method === 'POST') {
 
+    console.log('in post');
+
     let body = [];
     req.on('error', (err) => {
       console.error(err);
@@ -46,8 +48,8 @@ exports.handleRequest = function (req, res) {
       body.push(chunk);
     }).on('end', () => {
       body = Buffer.concat(body).toString();
-      const urlToAdd = body.split('=')[1];
 
+      const urlToAdd = body.split('=')[1];
       const handleUrlInListResponse = (isInList) => {
         if (isInList) {
           httpHelpers.serveAssets(res, '/loading.html', staticFileCb);
@@ -56,7 +58,16 @@ exports.handleRequest = function (req, res) {
         }
       };
 
-      archive.isUrlInList(urlToAdd, handleUrlInListResponse);
+      const handleUrlInArchiveRepsonse = (isInArchive) => {
+        if (isInArchive) {
+          httpHelpers.serveAssets(res, urlToAdd, staticFileCb);
+        } else {
+          archive.isUrlInList(urlToAdd, handleUrlInListResponse);
+        }
+      };
+
+      archive.isUrlArchived(urlToAdd, handleUrlInArchiveRepsonse);
+
     });
 
   } else {
