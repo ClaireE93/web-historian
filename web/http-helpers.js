@@ -11,28 +11,22 @@ exports.headers = {
 };
 
 exports.serveAssets = function(res, asset, callback) {
-  let statusCode;
+  let urlPath;
+  res.statusCode = 200;
   if (asset === '/' ) {
-    res.statusCode = 200;
-    const urlPath = path.join(__dirname, '/public/index.html'); //TODO Use archive.paths.siteAssets
-    fs.readFile(urlPath, (err, data) => {
-      callback(err, data); // callback: response.end(data.toString())
-    });
+    urlPath = path.join(__dirname, '/public/index.html'); //TODO Use archive.paths.siteAssets
   } else if (asset === '/styles.css') {
-    res.statusCode = 200;
-    const urlPath = path.join(__dirname, '/public/styles.css'); //TODO Use archive.paths.siteAssets
-    fs.readFile(urlPath, (err, data) => {
-      callback(err, data); // callback: response.end(data.toString())
-    });
+    urlPath = path.join(__dirname, '/public/styles.css'); //TODO Use archive.paths.siteAssets
   } else if (asset === '/loading.html') {
     res.statusCode = 302;
-    const urlPath = path.join(__dirname, '/public/loading.html'); //TODO Use archive.paths.siteAssets
-    fs.readFile(urlPath, (err, data) => {
-      callback(err, data); // callback: response.end(data.toString())
-    });
+    urlPath = path.join(__dirname, '/public/loading.html'); //TODO Use archive.paths.siteAssets
   } else {
-    archive.isUrlArchived(asset, callback);
+    urlPath = path.join(__dirname, `../web/archives/sites/${asset}`);
   }
+
+  fs.readFile(urlPath, (err, data) => {
+    callback(err, data);
+  });
 
 };
 

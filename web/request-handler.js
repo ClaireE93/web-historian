@@ -17,6 +17,7 @@ exports.handleRequest = function (req, res) {
       res.statusCode = 404;
       res.end();
     } else {
+      res.writeHead(res.statusCode, httpHelpers.headers);
       res.end(data.toString());
     }
   };
@@ -37,8 +38,6 @@ exports.handleRequest = function (req, res) {
     httpHelpers.serveAssets(res, url, staticFileCb);
 
   } else if (method === 'POST') {
-
-
 
     let body = [];
     req.on('error', (err) => {
