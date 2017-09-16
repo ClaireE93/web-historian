@@ -1,2 +1,9 @@
-// Use the code in `archive-helpers.js` to actually download the urls
-// that are waiting.
+const archive = require('../helpers/archive-helpers');
+
+const fetcher = () => {
+  archive.readListOfUrls((urls)=>{
+    archive.downloadUrls(urls);
+  });
+};
+
+fetcher();

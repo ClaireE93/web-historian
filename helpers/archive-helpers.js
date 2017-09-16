@@ -60,16 +60,25 @@ exports.isUrlArchived = function(url, callback) {
 
 exports.downloadUrls = function(urls) {
   const urlPath = path.join(__dirname, `../web/archives/sites/`);
+  let counter = urls.length - 1;
   urls.forEach((url) => {
     // if (!url.startsWith('http://')) {
     //   url = 'http://' + url;
     // }
+    console.log('CURRENT URL', url);
+    if (url.length < 1) { return; }
     request('http://' + url, function(error, response, html){
       if(!error){
         fs.open(urlPath + url, 'w', (err, fd) => {
           fs.writeFile(urlPath + url, html, (err) => {
             if (err) { throw err; }
             fs.close(fd, () => {
+              counter--;
+              console.log('counter is', counter);
+              if (counter === 0) {
+                console.log('clearing list');
+                exports.clearUrlList();
+              }
               return;
             });
           });
@@ -82,4 +91,14 @@ exports.downloadUrls = function(urls) {
 
   });
 
+};
+
+exports.clearUrlList = function() {
+  const testFile = path.join(__dirname, `../web/archives/sites.txt`);
+  fs.open(testFile, 'w', (err, fd) => {
+    if (err) { throw err; }
+    fs.close(fd, () => {
+      return;
+    });
+  });
 };
