@@ -14,14 +14,13 @@ exports.serveAssets = function(res, asset, callback, isRedirect = false) {
   let urlPath;
   res.statusCode = 200;
   if (asset === '/' ) {
-    urlPath = path.join(__dirname, '/public/index.html'); //TODO Use archive.paths.siteAssets
+    urlPath = path.join(__dirname, '/public/index.html');
   } else if (asset === '/styles.css') {
-    urlPath = path.join(__dirname, '/public/styles.css'); //TODO Use archive.paths.siteAssets
+    urlPath = path.join(__dirname, '/public/styles.css');
   } else if (asset === '/loading.html') {
     res.statusCode = 302;
-    urlPath = path.join(__dirname, '/public/loading.html'); //TODO Use archive.paths.siteAssets
+    urlPath = path.join(__dirname, '/public/loading.html');
   } else if (isRedirect) {
-    // res.statusCode = 302;
     urlPath = path.join(__dirname, `../web/archives/sites/${asset}`);
   } else {
     res.statusCode = 404;
@@ -34,9 +33,3 @@ exports.serveAssets = function(res, asset, callback, isRedirect = false) {
   });
 
 };
-
-
-
-
-
-// As you progress, keep thinking about what helper functions you can put here!

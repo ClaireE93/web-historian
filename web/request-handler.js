@@ -54,22 +54,6 @@ exports.handleRequest = function (req, res) {
       body = Buffer.concat(body).toString();
 
       const urlToAdd = body.split('=')[1];
-      // const handleUrlInListResponse = (isInList) => {
-      //   if (isInList) {
-      //     httpHelpers.serveAssets(res, '/loading.html', staticFileCb);
-      //   } else {
-      //     httpHelpers.serveAssets(res, '/', staticFileCb);
-      //     archive.addUrlToList(urlToAdd, addUrlCb);
-      //   }
-      // };
-      //
-      // const handleUrlInArchiveRepsonse = (isInArchive) => {
-      //   if (isInArchive) {
-      //     httpHelpers.serveAssets(res, urlToAdd, staticFileCb, true);
-      //   } else {
-      //     archive.isUrlInList(urlToAdd, handleUrlInListResponse);
-      //   }
-      // };
 
       archive.isUrlArchived(urlToAdd)
               .then((isInArchive) => {
