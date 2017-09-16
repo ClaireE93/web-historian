@@ -65,18 +65,18 @@ exports.downloadUrls = function(urls) {
     // if (!url.startsWith('http://')) {
     //   url = 'http://' + url;
     // }
-    console.log('CURRENT URL', url);
     if (url.length < 1) { return; }
     request('http://' + url, function(error, response, html){
       if(!error){
         fs.open(urlPath + url, 'w', (err, fd) => {
           fs.writeFile(urlPath + url, html, (err) => {
-            if (err) { throw err; }
+            if (err) {
+              console.error(err);
+            }
             fs.close(fd, () => {
               counter--;
               console.log('counter is', counter);
               if (counter === 0) {
-                console.log('clearing list');
                 exports.clearUrlList();
               }
               return;
