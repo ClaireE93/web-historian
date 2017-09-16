@@ -10,7 +10,7 @@ exports.headers = {
   'Content-Type': 'text/html'
 };
 
-exports.serveAssets = function(res, asset, callback) {
+exports.serveAssets = function(res, asset, callback, isRedirect = false) {
   let urlPath;
   res.statusCode = 200;
   if (asset === '/' ) {
@@ -20,9 +20,13 @@ exports.serveAssets = function(res, asset, callback) {
   } else if (asset === '/loading.html') {
     res.statusCode = 302;
     urlPath = path.join(__dirname, '/public/loading.html'); //TODO Use archive.paths.siteAssets
-  } else {
+  } else if (isRedirect) {
     // res.statusCode = 302;
     urlPath = path.join(__dirname, `../web/archives/sites/${asset}`);
+  } else {
+    res.statusCode = 404;
+    res.end();
+    return;
   }
 
   fs.readFile(urlPath, (err, data) => {

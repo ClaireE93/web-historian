@@ -9,6 +9,7 @@ const httpHelpers = require('./http-helpers');
 
 exports.handleRequest = function (req, res) {
   const { url, method, headers } = req;
+  console.log(`Serving ${method} for url: ${url}`);
   let statusCode;
   const parsedURL = urlMod.parse(url, true);
 
@@ -27,7 +28,6 @@ exports.handleRequest = function (req, res) {
       res.statusCode = 404;
       res.end();
     } else {
-      console.log('SENDING 302');
       res.statusCode = 302;
       res.end();
     }
@@ -39,7 +39,11 @@ exports.handleRequest = function (req, res) {
 
   } else if (method === 'POST') {
 
-    console.log('in post');
+    if (url !== '/') {
+      res.statusCode = 401;
+      res.end();
+      return;
+    }
 
     let body = [];
     req.on('error', (err) => {
@@ -54,13 +58,14 @@ exports.handleRequest = function (req, res) {
         if (isInList) {
           httpHelpers.serveAssets(res, '/loading.html', staticFileCb);
         } else {
+          httpHelpers.serveAssets(res, '/', staticFileCb);
           archive.addUrlToList(urlToAdd, addUrlCb);
         }
       };
 
       const handleUrlInArchiveRepsonse = (isInArchive) => {
         if (isInArchive) {
-          httpHelpers.serveAssets(res, urlToAdd, staticFileCb);
+          httpHelpers.serveAssets(res, urlToAdd, staticFileCb, true);
         } else {
           archive.isUrlInList(urlToAdd, handleUrlInListResponse);
         }
