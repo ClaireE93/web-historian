@@ -87,7 +87,14 @@ describe('archive helpers', function() {
       // fs.writeFileSync(archive.paths.list, urlArray.join('\n'));
       fs.writeFileSync(testPath, urlArray.join('\n'));
 
-      archive.readListOfUrls(function(urls) {
+      // archive.readListOfUrls(function(urls) {
+      //   expect(urls).to.deep.equal(urlArray);
+      //   done();
+      // });
+
+      archive.readListOfUrls()
+      .then((urls) => {
+        console.log('urls are', urls);
         expect(urls).to.deep.equal(urlArray);
         done();
       });
@@ -166,4 +173,33 @@ describe('archive helpers', function() {
       }, 1500);
     });
   });
+
+  describe('#addUrls', function () {
+    it('should handle users adding http:// to input url', function (done) {
+      archive.addUrlToList('http://www.example123.com')
+      .then(() => {
+        return archive.isUrlInList('www.example123.com');
+      })
+      .then((isInList) => {
+        expect(isInList).to.equal(true);
+        done();
+      });
+    });
+  });
+
+  describe('#addInvalidUrls', function () {
+    it('should handle users adding invalid urls', function (done) {
+      archive.addUrlToList('ww.dsahljkhfljkhasd;ljjksdf????!!!!')
+      .then(() => {
+        return archive.downloadUrls(['ww.dsahljkhfljkhasd;ljjksdf????!!!!']);
+      });
+
+      setTimeout(function () {
+        const contains = fs.readdirSync(path.join(__dirname, '../web/archives/sites')).includes('ww.dsahljkhfljkhasd;ljjksdf????!!!!');
+        expect(contains).to.equal(false);
+        done();
+      }, 1500);
+    });
+  });
+
 });

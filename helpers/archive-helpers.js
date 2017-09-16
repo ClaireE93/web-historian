@@ -44,6 +44,9 @@ exports.isUrlInList = function(url) {
 
 exports.addUrlToList = function(url) {
   const urlPath = path.join(__dirname, '../web/archives/sites.txt');
+  if (url.match(/^http\:\/\//gi)) {
+    url = url.slice(7);
+  }
   return fs.appendFileAsync(urlPath, url + '\n')
           .then(() => ( true ))
           .catch((err) => ( err ));
@@ -71,19 +74,32 @@ exports.downloadUrls = function(urls) {
                         });
 
     Promise.join(htmlPromise, openPromise, (html, fd) => {
-      fs.writeFileAsync(urlPath + url, html)
-      .catch((err) => {
-        console.error('error in downloading URLs', err);
-      })
-      .then(() => {
-        return fs.closeAsync(fd);
-      })
-      .then(() => {
+      if (html.toString().match(/ENOTFOUND/)) {
+        console.log('BAD URL', url);
+
         counter--;
         if (counter === 0) {
           exports.clearUrlList();
         }
-      });
+        fs.unlinkAsync(urlPath + url)
+        .then (() => {
+          return;
+        });
+      } else {
+        fs.writeFileAsync(urlPath + url, html)
+        .catch((err) => {
+          console.error('error in downloading URLs', err);
+        })
+        .then(() => {
+          return fs.closeAsync(fd);
+        })
+        .then(() => {
+          counter--;
+          if (counter === 0) {
+            exports.clearUrlList();
+          }
+        });
+      }
     });
   });
 };
